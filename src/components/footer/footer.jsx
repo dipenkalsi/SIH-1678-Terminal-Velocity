@@ -24,7 +24,7 @@ const Footer = () => {
                     </a>
                 </div>
                 <div className="mt-8 md:mt-0 md:order-1">
-                    <p className="text-center text-base text-gray-400">&copy; 2023 REDACT, Inc. All rights reserved.</p>
+                    <p className="text-center text-base text-gray-400">&copy; 2024 Terminal Velocity. All rights reserved.</p>
                 </div>
                 </div>
             </footer>

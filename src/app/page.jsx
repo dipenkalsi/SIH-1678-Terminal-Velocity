@@ -140,12 +140,12 @@ export default function RedactLanding() {
                 </p>
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
-                    <button className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 md:py-4 md:text-lg md:px-10">
+                    <button className="w-full flex items-center justify-center px-8 py-3 border border-transparent transition text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 md:py-4 md:text-lg md:px-10">
                       Get started
                     </button>
                   </div>
                   <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <button variant="outline" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-900 md:py-4 md:text-lg md:px-10">
+                    <button variant="outline" className="w-full transition flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-900 md:py-4 md:text-lg md:px-10">
                       Learn more
                     </button>
                   </div>
@@ -155,7 +155,7 @@ export default function RedactLanding() {
             {/* <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 flex items-center justify-center"> */}
             {/* <div className="lg:w-1/2 flex items-center justify-end">
               <div className="flex items-center justify-center"> */}
-            <div className="mt-10 lg:mt-0 lg:w-1/2 flex items-center justify-center lg:justify-end">
+            <div className="mt-10 lg:mt-0 lg:w-1/2 flex items-center justify-center lg:justify-end lg:mr-6">
             <div className="flex items-center justify-center">
               <div className="w-64 h-64 relative">
                 <div className="absolute inset-0 bg-white opacity-10 rounded-full animate-pulse"></div>

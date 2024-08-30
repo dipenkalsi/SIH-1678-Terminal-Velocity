@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
+import axios from 'axios';
 
 const RedactionComponent = () => {
   const [text, setText] = useState('');
@@ -10,33 +11,11 @@ const RedactionComponent = () => {
   const redact = async () => {
     setIsLoading(true);
     try {
-      const resp = await fetch(process.env.NEXT_PUBLIC_URL, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json", 
-          "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY  // Replace with your actual API key
-        },
-        body: JSON.stringify({
-          text: [text],
-          link_batch: false,
-          entity_detection: {
-            "entity_types": [
-              {
-                "type": "ENABLE",
-                "value": ["ACCOUNT_NUMBER","AGE","DATE","DATE_INTERVAL","DOB","DRIVER_LICENSE","DURATION","EMAIL_ADDRESS","EVENT","FILENAME","GENDER_SEXUALITY","HEALTHCARE_NUMBER","IP_ADDRESS","LANGUAGE","LOCATION","LOCATION_ADDRESS","LOCATION_ADDRESS_STREET","LOCATION_CITY","LOCATION_COORDINATE","LOCATION_COUNTRY","LOCATION_STATE","LOCATION_ZIP","MARITAL_STATUS","MONEY","NAME","NAME_FAMILY","NAME_GIVEN","NAME_MEDICAL_PROFESSIONAL","NUMERICAL_PII","ORGANIZATION","ORGANIZATION_MEDICAL_FACILITY","OCCUPATION","ORIGIN","PASSPORT_NUMBER","PASSWORD","PHONE_NUMBER","PHYSICAL_ATTRIBUTE","POLITICAL_AFFILIATION","RELIGION","SSN","TIME","URL","USERNAME","VEHICLE_ID","ZODIAC_SIGN","BLOOD_TYPE","CONDITION","DOSE","DRUG","INJURY","MEDICAL_PROCESS","STATISTICS","BANK_ACCOUNT","CREDIT_CARD","CREDIT_CARD_EXPIRATION","CVV","ROUTING_NUMBER"]
-              }
-            ],
-            return_entity: true
-          },
-          processed_text: {
-            type: "MARKER",
-            pattern: "[UNIQUE_NUMBERED_ENTITY_TYPE]"
-          }
-        })
-      });
-      
-      const data = await resp.json();
-      setRedactedText(data.processed_text[0]);
+      const r = await axios.post("https://8e97-2406-b400-71-d2dc-f0fe-7e75-cd1d-eed1.ngrok-free.app/redact/", {
+        text : text
+      })
+      const data = r.data;
+      setRedactedText(data.redacted_text[0].processed_text);
     } catch (error) {
       console.error("Error redacting text:", error);
       setRedactedText("An error occurred while redacting the text.");

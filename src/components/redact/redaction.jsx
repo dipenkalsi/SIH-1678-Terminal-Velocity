@@ -20,7 +20,6 @@ const RedactionComponent = () => {
     const allSelected = filters[category].every((option) =>
       selectedFilters.includes(option)
   );
-  // if(allSelected){;}
   if (allSelected) {
     setSelectedFilters(
       selectedFilters.filter((option) => !filters[category].includes(option))
@@ -44,16 +43,9 @@ const RedactionComponent = () => {
   const redact = async () => {
     setIsLoading(true);
     try {
-      const r = await axios.post("https://8e97-2406-b400-71-d2dc-f0fe-7e75-cd1d-eed1.ngrok-free.app/redact/", {
+      const r = await axios.post("https://0815-2406-b400-71-d2dc-e90f-d262-75b4-ca09.ngrok-free.app/redact/", {
         text: text,
-        "entity_detection": {
-          "entity_types": [
-            {
-              "type": "ENABLE",
-              "value": selectedFilters
-            }
-          ]
-        }
+        filters: selectedFilters
       })
       const data = r.data;
       setRedactedText(data.redacted_text[0].processed_text);

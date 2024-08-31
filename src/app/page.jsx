@@ -109,7 +109,7 @@ export default function RedactLanding() {
                   </span>
                 </h1>
                 <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                  PIReT: Personal Identity Redaction Tool
+                  PIReT: Private Information Redaction Tool
                 </p>
                 <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                   Protect sensitive information with our advanced redaction tool. Easily obscure confidential data in your documents.

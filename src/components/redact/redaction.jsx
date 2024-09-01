@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Check, Copy } from 'lucide-react';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 const RedactionComponent = () => {
   const [text, setText] = useState('');
@@ -40,15 +41,44 @@ const RedactionComponent = () => {
     );
     
   };
+
+  function encryptData(plainText, secretKey) {
+    // Generate a random IV
+    const iv = CryptoJS.lib.WordArray.random(16);
+    
+    // Encrypt the plain text using AES with the secret key and IV
+    const encrypted = CryptoJS.AES.encrypt(plainText, CryptoJS.enc.Utf8.parse(secretKey), {
+        iv: iv,
+        padding: CryptoJS.pad.Pkcs7,
+        mode: CryptoJS.mode.CBC
+    });
+
+    // Combine IV and encrypted text and encode in Base64
+    const encryptedBase64 = CryptoJS.enc.Base64.stringify(iv.concat(encrypted.ciphertext));
+    return encryptedBase64;
+}
+
+
+
   const redact = async () => {
     setIsLoading(true);
+    const secretKey = '1234567890123456';  // AES-128 requires a 16-byte key
+    // const plainText = 'Chat pe soya tha behnoi';  // Replace with your plain text
+    
+    const encryptedText = encryptData(text, secretKey);
+    console.log('Encrypted Text:', encryptedText);
+    if (!encryptedText) {
+      setIsLoading(false);
+      setRedactedText("Encryption failed due to missing secret key.");
+      return;
+  } 
     try {
-      const r = await axios.post("https://0815-2406-b400-71-d2dc-e90f-d262-75b4-ca09.ngrok-free.app/redact/", {
-        text: text,
+      const r = await axios.post("http://127.0.0.1:8000/redact/", {
+        text: encryptedText,
         filters: selectedFilters
       })
-      const data = r.data;
-      setRedactedText(data.redacted_text[0].processed_text);
+      const data = r.data;  
+      setRedactedText(data.redacted_text);
     } catch (error) {
       console.error("Error redacting text:", error);
       setRedactedText("An error occurred while redacting the text.");

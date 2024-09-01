@@ -73,7 +73,7 @@ const RedactionComponent = () => {
       return;
   } 
     try {
-      const r = await axios.post("http://127.0.0.1:8000/redact/", {
+      const r = await axios.post("https://4ba3-2406-b400-71-d2dc-3d32-9ba8-4b39-ec6c.ngrok-free.app/redact/", {
         text: encryptedText,
         filters: selectedFilters
       })

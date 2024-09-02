@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Menu, X, FileText, Copy, Check, Search } from 'lucide-react'
 import Link from "next/link";
+import { UserButton } from '@clerk/nextjs';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -30,6 +31,7 @@ const Navbar = () => {
               <a href="#" className="text-gray-300 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">
                 Contact
               </a>
+              <UserButton/>
             </div>
             <div className="-mr-2 flex items-center sm:hidden">
               <button

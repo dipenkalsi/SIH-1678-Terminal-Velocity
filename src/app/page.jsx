@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useSpring, animated } from 'react-spring'
 import { Menu, X, FileText, Copy, Check, Search } from 'lucide-react'
-import RedactionComponent from '@/components/redact/redaction'
+import RedactionComponent from '../components/redact/redaction'
 
 export default function RedactLanding() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

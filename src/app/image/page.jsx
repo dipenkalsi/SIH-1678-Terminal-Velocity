@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Check, Copy } from 'lucide-react';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-const page = () => {
+const Page = () => {
   const [text, setText] = useState('');
   const [base64Image, setbase64Image] = useState('');
   const [image, setImage] = useState(null);
@@ -255,4 +255,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

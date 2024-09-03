@@ -1,10 +1,10 @@
+'use client'
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Check, Copy } from 'lucide-react';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-
-const RedactionComponent = () => {
+const Page = () => {
   const [text, setText] = useState('');
   const [base64Image, setbase64Image] = useState('');
   const [image, setImage] = useState(null);
@@ -13,7 +13,7 @@ const RedactionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('text');
+  const [selectedOption, setSelectedOption] = useState('image');
 
   const filters = {
     "PII (Personally Identifiable Information)": ['ACCOUNT_NUMBER', 'AGE', 'DATE', 'DATE_INTERVAL', 'DOB', 'DRIVER_LICENSE', 'DURATION', 'EMAIL_ADDRESS', 'EVENT', 'FILENAME', 'GENDER_SEXUALITY', 'GENDER', 'SEXUALITY', 'HEALTHCARE_NUMBER', 'IP_ADDRESS', 'LANGUAGE', 'LOCATION', 'LOCATION_ADDRESS', 'LOCATION_ADDRESS_STREET', 'LOCATION_CITY', 'LOCATION_COORDINATE', 'LOCATION_COUNTRY', 'LOCATION_STATE', 'LOCATION_ZIP', 'MARITAL_STATUS', 'MONEY', 'NAME', 'NAME_FAMILY', 'NAME_GIVEN', 'NAME_MEDICAL_PROFESSIONAL', 'NUMERICAL_PII', 'ORGANIZATION', 'ORGANIZATION_MEDICAL_FACILITY', 'OCCUPATION', 'ORIGIN', 'PASSPORT_NUMBER', 'PASSWORD', 'PHONE_NUMBER', 'PHYSICAL_ATTRIBUTE', 'POLITICAL_AFFILIATION', 'RELIGION', 'SSN', 'TIME', 'URL', 'USERNAME', 'VEHICLE_ID', 'ZODIAC_SIGN'],
@@ -153,44 +153,38 @@ const RedactionComponent = () => {
     }
   };
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-3xl font-extrabold text-white text-center mb-8">Try PIReT Now</h2>
-        <div className="flex flex-col space-y-4">
-          <div className="flex space-x-6 items-center">
-            {/* {selectedOption === 'text' ? ( */}
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                className="w-full px-3 py-2 text-white bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-gray-500"
-                rows={4}
-                placeholder="Enter your text here..."
-              />
-            {/* ) : ( */}
-              
-            {/* )} */}
 
-            
-          </div>
-          <div className="relative">
+    const handleImageChange = async (e) => {
+        setImage(e.target.files[0]);
+        const file = e.target.files[0];
+        if (file) {
+          try {
+            // Await the result of the Promise that resolves the base64 string
+            const base64Str = await readFileAsDataURL(file);
+    
+            setbase64Image(base64Str);
+            console.log("image in text:", base64Str);
+          } catch (error) {
+            console.error("Error reading file:", error);
+          }
+        }
+      };
+  return (
+    <div className='flex flex-col items-center justify-center py-10'>
+        <h2 className='my-3 text-3xl font-bold'>
+            PIReT for images
+        </h2>
+      <input type="file" accept="image/*" onChange={handleImageChange} className="w-5/6  px-3 h-16 py-2 text-white bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-gray-500 " />
+
+          <div className="relative  w-5/6">
             {isFilterOpen && (
               <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-10" onClick={toggleFilter}></div>
             )}
-
-            <div className='float-right'>
-
-            <a href="/image">
-              <button className="px-4 text-sm my-3 py-2 bg-yellow-300 bg-blend-normal text-black rounded-lg z-20 relative transition hover:bg-yellow-200 mr-3">
-                Try PIReT for images
-              </button>
-            </a>
-            <button className="px-4 text-sm my-3 py-2 bg-gray-300 bg-blend-normal text-black rounded-lg z-20 relative transition hover:bg-gray-200" onClick={toggleFilter}>
+            <button className="px-4 text-sm my-3 py-2 bg-gray-300 bg-blend-normal text-black rounded-lg z-20 relative float-right hover:bg-gray-200" onClick={toggleFilter}>
               Filters
             </button>
-            </div>
             {isFilterOpen && (
-              <div className="absolute -top-80 lg:-top-80 lg:-left-40 flex flex-col lg:flex-row max-h-80 overflow-y-auto border bg-black p-6 rounded shadow-lg z-30 bg-opacity-50 lg:space-x-10">
+              <div className="absolute flex max-h-80 overflow-y-auto border bg-black p-6 rounded shadow-lg z-30 bg-opacity-50 space-x-10">
                 {Object.keys(filters).map((category) => {
                   const isAllSelected = filters[category].every((option) => selectedFilters.includes(option))
                   return (
@@ -225,12 +219,12 @@ const RedactionComponent = () => {
           </div>
           <button
             onClick={redact}
-            className="w-full bg-white text-black font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-200 disabled:opacity-50"
+            className=" bg-white text-black font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-200 disabled:opacity-50 w-5/6"
             disabled={isLoading || (!text && !base64Image)}
           >
-            {isLoading ? 'Redacting...' : 'Redact Text'}
+            {isLoading ? 'Redacting...' : 'Redact Image'}
           </button>
-          <div className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg relative">
+          <div className="w-5/6 my-2 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg relative">
             {((selectedOption === 'text') && !isLoading)? (
               <div className="bg-gray-700 border border-gray-300 p-4 rounded-md shadow-md text-gray-700">
                 <p className="text-white font-mono break-all">{redactedText || 'Redacted text will appear here...'}</p>
@@ -256,14 +250,9 @@ const RedactionComponent = () => {
               </button>
             )}
           </div>
-        </div>
-      </div>
     </div>
-  );
-};
 
-export default RedactionComponent;
+  )
+}
 
-
-
-
+export default Page
